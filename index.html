@@ -195,7 +195,7 @@
         }
 
         .gift-box:hover {
-            transform: scale(1.02); /* Apenas escala, sem rotação lateral */
+            transform: scale(1.02);
         }
 
         .gift-box.opening {
@@ -373,7 +373,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .message {
@@ -395,6 +395,25 @@
             animation: heartsAppear 1s cubic-bezier(0.34, 1.56, 0.64, 1) 2s forwards;
         }
 
+        .saiba-mais {
+            background: linear-gradient(145deg, #ff1493, #dc143c);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0);
+            animation: heartsAppear 1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.5s forwards;
+            transition: transform 0.2s ease;
+        }
+
+        .saiba-mais:hover {
+            transform: scale(1.05);
+        }
+
         @keyframes messageAppear {
             to {
                 opacity: 1;
@@ -414,6 +433,54 @@
                 opacity: 1;
                 transform: scale(1) rotate(0deg);
             }
+        }
+
+        /* Dialog box */
+        .dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 360px;
+            max-width: 90%;
+            background: linear-gradient(145deg, #fff8dc, #fffacd);
+            border: 3px solid #f0e68c;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            z-index: 20;
+        }
+
+        .dialog.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .dialog p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #d63384;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .dialog button {
+            background: linear-gradient(145deg, #ff1493, #dc143c);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .dialog button:hover {
+            transform: scale(1.05);
         }
 
         .instruction {
@@ -520,6 +587,7 @@
             }
             .message { font-size: 22px; }
             .hearts-decoration { font-size: 20px; }
+            .saiba-mais { font-size: 14px; padding: 8px 16px; }
             .instruction { 
                 font-size: 16px; 
                 bottom: 15px; 
@@ -532,6 +600,17 @@
             .galaxy:nth-child(1) { top: -100px; left: -100px; }
             .galaxy:nth-child(2) { bottom: -100px; right: -100px; }
             .galaxy:nth-child(3) { right: -150px; }
+            .dialog {
+                width: 280px;
+                padding: 15px;
+            }
+            .dialog p {
+                font-size: 16px;
+            }
+            .dialog button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -575,6 +654,7 @@
             }
             .message { font-size: 18px; }
             .hearts-decoration { font-size: 16px; }
+            .saiba-mais { font-size: 12px; padding: 6px 12px; }
             .instruction { font-size: 14px; bottom: 10px; }
             .galaxy {
                 width: 150px;
@@ -583,6 +663,17 @@
             .galaxy:nth-child(1) { top: -75px; left: -75px; }
             .galaxy:nth-child(2) { bottom: -75px; right: -75px; }
             .galaxy:nth-child(3) { right: -100px; }
+            .dialog {
+                width: 240px;
+                padding: 12px;
+            }
+            .dialog p {
+                font-size: 14px;
+            }
+            .dialog button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
         }
     </style>
 </head>
@@ -623,6 +714,7 @@
                     <div class="letter-content">
                         <div class="message">Quer namorar cmg<br>Luana? 💕</div>
                         <div class="hearts-decoration">💫 ⭐ 💖 ⭐ 💫</div>
+                        <button class="saiba-mais" onclick="showDialog()">Saiba mais</button>
                     </div>
                 </div>
             </div>
@@ -632,9 +724,16 @@
     <div class="instruction" id="instruction">
         ⭐ Clique na caixa para revelar a mensagem cósmica ⭐
     </div>
+
+    <div class="dialog" id="dialogBox">
+        <p>Notei que vc nesses dois últimos dias se abriu mais cmg, permitiu que eu fosse amigo de seus amigos, ficou mais tempo em ligação cmg e ate ligou a câmera, essa interação maior me fez criar coragem para te pedir em namoro e ficaria honrado se aceitasse :D</p>
+        <button onclick="closeDialog()">OK</button>
+    </div>
+
     <script>
         const giftBox = document.getElementById('giftBox');
         const instruction = document.getElementById('instruction');
+        const dialogBox = document.getElementById('dialogBox');
         let boxOpened = false;
 
         // Create starfield
@@ -712,6 +811,16 @@
                     }
                 }, 2000);
             }
+        }
+
+        // Show dialog function
+        function showDialog() {
+            dialogBox.classList.add('show');
+        }
+
+        // Close dialog function
+        function closeDialog() {
+            dialogBox.classList.remove('show');
         }
 
         // Initialize starfield
